@@ -6,6 +6,7 @@ import com.truelayer.pokedex.exeption.PokemonNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
@@ -26,11 +27,18 @@ class PokemonApiClientImplTest {
     void setUp() {
         RestTemplate restTemplate = new RestTemplate();
         server = MockRestServiceServer.bindTo(restTemplate).build();
+
         RestClient restClient = RestClient.builder(restTemplate)
                 .baseUrl("https://pokeapi.co/api/v2")
                 .build();
 
         client = new PokemonApiClientImpl(restClient);
+
+        ReflectionTestUtils.setField(
+                client,
+                "speciesPath",
+                "/pokemon-species/{name}"
+        );
     }
 
     @Test
