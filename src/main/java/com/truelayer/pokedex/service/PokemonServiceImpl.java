@@ -7,20 +7,16 @@ import com.truelayer.pokedex.dto.external.PokemonSpeciesResponse;
 import com.truelayer.pokedex.exeption.TranslationException;
 import com.truelayer.pokedex.mapper.PokemonMapper;
 import com.truelayer.pokedex.model.TranslationType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class PokemonServiceImpl implements PokemonService {
 
     private final PokemonApiClient pokeApiClient;
     private final PokemonMapper pokemonMapper;
     private final FunTranslationsClient funTranslationsClient;
-
-    public PokemonServiceImpl(PokemonApiClient pokeApiClient, PokemonMapper pokemonMapper, FunTranslationsClient funTranslationsClient) {
-        this.pokeApiClient = pokeApiClient;
-        this.pokemonMapper = pokemonMapper;
-        this.funTranslationsClient = funTranslationsClient;
-    }
 
     @Override
     public PokemonResponse getPokemonByName(String name) {
