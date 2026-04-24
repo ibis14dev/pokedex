@@ -93,18 +93,23 @@ The application uses environment-based configuration.
 - clients.pokeapi.base-url: https://pokeapi.co/api/v2
 - clients.translations.base-url: https://api.funtranslations.mercxry.me
 
-Env vars: POKEAPI_BASE_URL TRANSLATIONS_BASE_URL
+Env vars: POKEAPI_BASE_URL POKEAPI_SPECIES_PATH TRANSLATIONS_BASE_URL TRANSLATIONS_YODA_PATH TRANSLATIONS_SHAKESPEARE_PATH
 
 Environment variables (for production)
 
-POKEAPI_BASE_URL=https://pokeapi.co/api/v2
-TRANSLATIONS_BASE_URL=https://api.funtranslations.mercxry.me
+- POKEAPI_BASE_URL=https://pokeapi.co/api/v2
+- POKEAPI_SPECIES_PATH=/pokemon-species/{name}
+- TRANSLATIONS_BASE_URL=https://api.funtranslations.mercxry.me
+- TRANSLATIONS_YODA_PATH=/v1/translate/yoda
+- TRANSLATIONS_SHAKESPEARE_PATH=/v1/translate/shakespeare
 
 Used in config as:
 
-clients.pokeapi.base-url=${POKEAPI_BASE_URL}
-
-clients.translations.base-url=${TRANSLATIONS_BASE_URL}
+- clients.pokeapi.base-url=${POKEAPI_BASE_URL}
+- clients.pokeapi.species-path=${POKEAPI_SPECIES_PATH}
+- clients.translations.base-url=${TRANSLATIONS_BASE_URL}
+- clients.translations.yoda-path=${TRANSLATIONS_YODA_PATH}
+- clients.translations.shakespeare-path=${TRANSLATIONS_SHAKESPEARE_PATH}
 
 Profiles
 - local → default values
@@ -133,7 +138,10 @@ docker run -p 8080:8080 pokedex
 docker run -p 8080:8080 \
 -e SPRING_PROFILES_ACTIVE=prod \
 -e POKEAPI_BASE_URL=https://pokeapi.co/api/v2 \
+-e POKEAPI_SPECIES_PATH=/pokemon-species/{name} \
 -e TRANSLATIONS_BASE_URL=https://api.funtranslations.mercxry.me \
+-e TRANSLATIONS_YODA_PATH=/v1/translate/yoda \
+-e TRANSLATIONS_SHAKESPEARE_PATH=/v1/translate/shakespeare \
 pokedex
 
 ## Running tests

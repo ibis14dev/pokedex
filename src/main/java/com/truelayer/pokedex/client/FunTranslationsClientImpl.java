@@ -5,6 +5,7 @@ import com.truelayer.pokedex.dto.external.TranslationSuccessResponse;
 import com.truelayer.pokedex.exeption.TranslationException;
 import com.truelayer.pokedex.model.TranslationType;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -17,6 +18,12 @@ public class FunTranslationsClientImpl implements FunTranslationsClient {
 
     private final RestClient translationRestClient;
 
+    @Value("${clients.translations.yoda-path}")
+    private String yodaPath;
+
+    @Value("${clients.translations.shakespeare-path}")
+    private String shakespearePath;
+
     public FunTranslationsClientImpl(@Qualifier("translationRestClient") RestClient translationRestClient) {
         this.translationRestClient = translationRestClient;
     }
@@ -24,8 +31,8 @@ public class FunTranslationsClientImpl implements FunTranslationsClient {
     @Override
     public String translate(String text, TranslationType translationType) {
         String endpoint = switch (translationType) {
-            case YODA -> "/v1/translate/yoda";
-            case SHAKESPEARE -> "/v1/translate/shakespeare";
+            case YODA -> yodaPath;
+            case SHAKESPEARE -> shakespearePath;
         };
 
         try {
@@ -42,6 +49,7 @@ public class FunTranslationsClientImpl implements FunTranslationsClient {
             }
 
             return response.contents().translated();
+
         } catch (RestClientResponseException ex) {
             throw new TranslationException(
                     "Translation API error: status=%s, response=%s"
